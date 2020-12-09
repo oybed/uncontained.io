@@ -1,0 +1,16 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: run-tests
+spec:
+  workspaces:
+    - name: source
+      description: The git repo
+  steps:
+    - name: run-tests
+      image: quay.io/redhat-cop/uncontained-local-dev
+      workingDir: /workspace/source
+      command: ["npm"]
+      args:
+        - "test"

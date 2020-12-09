@@ -1,0 +1,53 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: uncontained-build-and-deploy
+spec:
+  workspaces:
+  - name: uncontained
+  params:
+  - name: deployment-name
+    type: string
+    description: Name of the deployment
+  - name: scm-url
+    description: Git Repo for Source Code
+    default: "https://github.com/redhat-cop/uncontained.io"
+    type: string
+  - name: scm-ref
+    description: Ref in Git Repo
+    default: "master"
+    type: string
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: uncontained
+    params:
+    - name: url
+      value: $(params.scm-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.scm-ref)
+  - name: run-build
+    taskRef:
+      name: run-build
+    workspaces:
+    - name: source
+      workspace: uncontained
+    runAfter:
+    - fetch-repository
+  - name: run-tests
+    taskRef:
+      name: run-tests
+    workspaces:
+    - name: source
+      workspace: uncontained
+    runAfter:
+    - run-build
