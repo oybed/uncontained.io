@@ -2,5 +2,5 @@ FROM nginx:latest
 
 WORKDIR /usr/share/nginx/html
 
-COPY ./dist/* .
+COPY /workspace/source/dist/* .
 RUN ls -la
