@@ -59,7 +59,7 @@ spec:
     - name: TLSVERIFY
       value: "false"
     - name: IMAGE
-      value: image-registry.openshift-image-registry.svc:5000/uncontained/site
+      value: image-registry.openshift-image-registry.svc:5000/obedin-uncontained/site
     workspaces:
     - name: source
       workspace: uncontained

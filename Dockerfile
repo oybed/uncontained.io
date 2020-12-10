@@ -1,3 +1,3 @@
-FROM nginx:latest
+FROM nginx:latest as builder
 
-COPY dist/* /usr/share/nginx/html/.
+RUN cp -r ./dist/* /usr/share/nginx/html
