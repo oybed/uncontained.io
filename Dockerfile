@@ -1,6 +1,8 @@
 FROM nginx:latest
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /uncontained
+COPY . .
 
-COPY /workspace/source/dist/* .
-RUN ls -la
+RUN cp -r ./dist/. /usr/share/nginx/html
+RUN ls -la 
+RUN ls -la /usr/share/nginx/html
