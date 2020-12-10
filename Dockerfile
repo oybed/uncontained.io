@@ -1,4 +1,5 @@
-FROM nginx:latest as builder
+FROM nginx:latest
 
-RUN ls -al
-RUN cp -r ./dist/* /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+
+COPY ./dist/* .
