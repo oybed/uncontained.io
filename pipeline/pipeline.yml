@@ -12,11 +12,11 @@ spec:
     description: Name of the deployment
   - name: scm-url
     description: Git Repo for Source Code
-    default: "https://github.com/redhat-cop/uncontained.io"
+    default: "https://github.com/oybed/uncontained.io"
     type: string
   - name: scm-ref
     description: Ref in Git Repo
-    default: "master"
+    default: "new-pipeline"
     type: string
   tasks:
   - name: fetch-repository
@@ -51,3 +51,17 @@ spec:
       workspace: uncontained
     runAfter:
     - run-build
+  - name: build-image
+    taskRef:
+      name: buildah
+      kind: ClusterTask
+    params:
+    - name: TLSVERIFY
+      value: "false"
+    - name: IMAGE
+      value: image-registry.openshift-image-registry.svc:5000/uncontained/site
+    workspaces:
+    - name: source
+      workspace: uncontained
+    runAfter:
+    - run-tests
